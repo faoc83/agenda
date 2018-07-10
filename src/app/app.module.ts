@@ -6,25 +6,31 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HttpModule } from '@angular/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { AgendaComponent } from './agenda/agenda.component';
+import { EventSesrvice } from './agenda/event.service';
+import { FullCalendarModule } from 'ng-fullcalendar';
 
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login' , pathMatch: 'full'},
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'agenda', component: AgendaComponent }
 
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    AgendaComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
+    FullCalendarModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [UserService,  {provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [UserService, EventSesrvice, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

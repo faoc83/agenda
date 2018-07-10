@@ -18,10 +18,8 @@ users:any;
   getUsersList() {
     this.userService.getAllUsers().then((res) => {
       this.users = res;
-      console.log("--------------Z"+this.users);
-    }, (err) => {
-      console.log("erro-----Z"+err);
-    });
+      console.log("--------------Z"+ res);
+    })
   }
 
 }
