@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AgendaComponent } from './agenda/agenda.component';
@@ -28,6 +29,7 @@ const appRoutes: Routes = [
     BrowserModule,
     HttpModule,
     FullCalendarModule,
+    FormsModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [UserService, EventSesrvice, {provide: LocationStrategy, useClass: HashLocationStrategy}],

@@ -30,19 +30,6 @@ export class AgendaComponent implements OnInit {
       events: res,
       };
     });
-   /*  this.eventService.getEvents().subscribe(data => {
-      this.calendarOptions = {
-        editable: true,
-        eventLimit: false,
-        header: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'month,agendaWeek,agendaDay,listMonth'
-        },
-        selectable: true,
-      events: data,
-      };
-    }); */
   }
   clickButton(model: any) {
     this.displayEvent = model;

@@ -1,5 +1,6 @@
 import { UserService } from './../user.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,9 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 users:any;
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
+  
   ngOnInit() {
-    console.log("entra")
     this.getUsersList();
   }
 
@@ -18,8 +19,14 @@ users:any;
   getUsersList() {
     this.userService.getAllUsers().then((res) => {
       this.users = res;
-      console.log("--------------Z"+ res);
     })
   }
+
+  doLogin(data) {
+    if (true) {
+      this.router.navigate(['/agenda']);
+    }
+   // alert("Entered Email id : " + data.username);
+ }
 
 }

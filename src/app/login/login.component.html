@@ -1,32 +1,16 @@
-<!-- <div class="container">
-  <h1>Book Catalogue
-   
-  </h1>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Author</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let u of users">
-        <td>{{ u.name }}</td>
-        <td>{{ u.username }}</td>
-        <!-- <td><a [routerLink]="['/book-details', user._id]">Show Details</a></td> -->
-<!--   </tr>
-    </tbody>
-  </table>
-</div>
- -->
 <div class="wrapper">
-    <form class="form-signin">
-        <h2 class="form-signin-heading"></h2>
-        <input type="text" class="form-control" name="username" placeholder="Email Address" required="" autofocus="" />
-        <input type="password" class="form-control" name="password" placeholder="Password" required="" />
-        <label class="checkbox">
-        <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
-      </label>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+    <h3>Login</h3>
+    <hr />
+    <form #userlogin="ngForm" class="form-signin" (ngSubmit)="doLogin(userlogin.value)">
+        <div class="form-group">
+            <label for="inputUsername">Email address</label>
+            <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username" ngModel>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" ngModel>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Login</button>
     </form>
 </div>
