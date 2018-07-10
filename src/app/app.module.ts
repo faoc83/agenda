@@ -10,6 +10,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AgendaComponent } from './agenda/agenda.component';
 import { EventSesrvice } from './agenda/event.service';
 import { FullCalendarModule } from 'ng-fullcalendar';
+import { HeaderComponent } from './header/header.component';
 
 
 const appRoutes: Routes = [
@@ -23,7 +24,8 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    AgendaComponent
+    AgendaComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

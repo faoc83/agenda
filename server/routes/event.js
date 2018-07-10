@@ -4,13 +4,15 @@ var mongoose = require('mongoose');
 var Events = require('../models/Event.js');
 
 
-/* GET ALL UserS */
+/* GET ALL Events */
 router.get('/event', function(req, res, next) {
     Events.find({}, function(err, users) {
         if (err) return next(err);
         res.json(users);
     });
 });
+
+
 
 
 module.exports = router;

@@ -11,7 +11,7 @@ export class UserService {
  
   getAllUsers() {
     return new Promise((resolve, reject) => {
-        this.http.get(API_URL + '/api/user').pipe(map(res => res)).subscribe(res => {
+        this.http.get(API_URL + '/api/user').pipe(map(res => res.json())).subscribe(res => {
             resolve(res);
      
           }, (err) => {

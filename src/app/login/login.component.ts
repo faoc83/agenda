@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 users:any;
+isUserLoggedIn:false;
   constructor(private userService: UserService, private router: Router) { }
   
   ngOnInit() {
@@ -24,6 +25,7 @@ users:any;
 
   doLogin(data) {
     if (true) {
+      sessionStorage.setItem('userId','5b43d7d6f844183ef00480fd')
       this.router.navigate(['/agenda']);
     }
    // alert("Entered Email id : " + data.username);

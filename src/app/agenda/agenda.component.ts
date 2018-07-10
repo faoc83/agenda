@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
 import { EventSesrvice } from './event.service';
+import { UserService } from '../user.service';
+
 
 @Component({
   selector: 'app-agenda',
@@ -9,12 +11,14 @@ import { EventSesrvice } from './event.service';
   styleUrls: ['./agenda.component.css']
 })
 export class AgendaComponent implements OnInit {
-
+  isUserLoggedIn:true;
   calendarOptions: Options;
   displayEvent: any;
+  todayEvents:any;
+  contacts:any;
   @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
-  constructor(protected eventService: EventSesrvice) { }
+  constructor(protected eventService: EventSesrvice, protected userService:UserService) { }
 
   ngOnInit() {
     this.eventService.getUserEvents().then((res) => {
@@ -27,9 +31,19 @@ export class AgendaComponent implements OnInit {
           right: 'month,agendaWeek,agendaDay,listMonth'
         },
         selectable: true,
-      events: res,
+       events: res,
+       
       };
     });
+
+    this.userService.getAllUsers().then((res)=>{
+      this.contacts=res;
+    })
+
+    this.getUserEvents();
+
+
+
   }
   clickButton(model: any) {
     this.displayEvent = model;
@@ -49,13 +63,14 @@ export class AgendaComponent implements OnInit {
     this.displayEvent = model;
   }
   updateEvent(model: any) {
+    
     model = {
       event: {
         id: model.event.id,
         start: model.event.start,
         end: model.event.end,
         title: model.event.title
-        // other params
+   
       },
       duration: {
         _data: model.duration._data
@@ -63,4 +78,24 @@ export class AgendaComponent implements OnInit {
     }
     this.displayEvent = model;
   }
+
+
+
+  newEvent(data) {    
+    const ev = {title: 'small',
+    startDate:'2018-07-10T10:00',
+    endDate:'2018-07-10T11:00',
+  userId:sessionStorage.getItem('userId')};
+    this.eventService.createEvent(ev).then((result) => {
+     this.todayEvents.push(ev);
+      }, (err) => {
+        console.log(err);
+      });  
+ }
+
+getUserEvents(){
+  this.eventService.getUserTodayEvents().then((res) => {
+    this.todayEvents=res;
+});
+}
 }
