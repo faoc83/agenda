@@ -24,9 +24,9 @@ export class EventSesrvice {
       }
 
       getUserEvents() {
-        var userId = "5b43d7d6f844183ef00480fd";
+        var userId = "5b45e33a673c3612a493aa02";
         return new Promise((resolve, reject) => {
-            this.http.get(API_URL + '/api/event/eventByUder/'+userId).pipe(map(res => res.json())).subscribe(res => {
+            this.http.get(API_URL + '/api/user/events/'+userId).pipe(map(res => res.json())).subscribe(res => {
               console.log("eventos: "+JSON.stringify(res))
                 resolve(res);
               }, (err) => {
@@ -36,11 +36,13 @@ export class EventSesrvice {
       }
 
       getUserTodayEvents() {
-        var userId = "5b43d7d6f844183ef00480fd";
+        var userId = "5b45e33a673c3612a493aa02";
         const dateObj = new Date();
-        const yearMonth = dateObj.getUTCFullYear() + '-' + ("0" + (dateObj.getUTCMonth() + 1)).slice(-2)+ '-' + ("0" + dateObj.getDate()).slice(-2);
+        const yearMonth = dateObj.getUTCFullYear() + '-' + ("0" + (dateObj.getUTCMonth() + 1)).slice(-2)
+                            + '-' + ("0" + dateObj.getDate()).slice(-2);
+
         return new Promise((resolve, reject) => {
-            this.http.get(API_URL + '/api/event/todayEventByUder/'+userId +'/'+ yearMonth).pipe(map(res => res.json())).subscribe(res => {
+            this.http.get(API_URL + '/api/event/todayEventByUser/'+ userId +'/'+ yearMonth).pipe(map(res => res.json())).subscribe(res => {
                 resolve(res);
                 const data: any = res
               }, (err) => {
@@ -50,6 +52,11 @@ export class EventSesrvice {
       }
 
       createEvent(data) {
+  
+        const ev = {title: 'small',
+    start:'2018-07-10T10:00',
+    endDate:'2018-07-10T11:00'};
+
          
         return new Promise((resolve, reject) => {
             this.http.post(API_URL + '/api/event/create', data)

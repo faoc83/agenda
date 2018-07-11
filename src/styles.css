@@ -1,5 +1,5 @@
 body {
-    background: #eee !important;
+    background: #eee;
 }
 
 .wrapper {
@@ -16,8 +16,6 @@ body {
 }
 
 .form-signin .form-signin-heading,
-
-
 .form-signin .form-control {
     position: relative;
     font-size: 16px;

@@ -16,19 +16,27 @@ isUserLoggedIn:false;
     this.getUsersList();
   }
 
-  
+  /**
+   * load users
+   */
   getUsersList() {
     this.userService.getAllUsers().then((res) => {
       this.users = res;
-    })
+    });
   }
 
+  /**
+   * get data from login form and do login
+   * @param data 
+   */
   doLogin(data) {
-    if (true) {
-      sessionStorage.setItem('userId','5b43d7d6f844183ef00480fd')
-      this.router.navigate(['/agenda']);
-    }
-   // alert("Entered Email id : " + data.username);
+    this.userService.doLogin(data).then(id => {
+      sessionStorage.setItem('userId',id.toString());
+
+    }).catch(e=> {
+      console.log("Error: "+e)
+    })
+
  }
 
 }

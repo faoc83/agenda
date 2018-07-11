@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
 import { EventSesrvice } from './event.service';
 import { UserService } from '../user.service';
+import { JSDocCommentStmt } from '../../../node_modules/@angular/compiler';
 
 
 @Component({
@@ -42,12 +43,11 @@ export class AgendaComponent implements OnInit {
 
     this.getUserEvents();
 
-
-
   }
   clickButton(model: any) {
     this.displayEvent = model;
   }
+
   eventClick(model: any) {
     model = {
       event: {
@@ -63,7 +63,6 @@ export class AgendaComponent implements OnInit {
     this.displayEvent = model;
   }
   updateEvent(model: any) {
-    
     model = {
       event: {
         id: model.event.id,
@@ -81,13 +80,12 @@ export class AgendaComponent implements OnInit {
 
 
 
-  newEvent(data) {    
-    const ev = {title: 'small',
-    startDate:'2018-07-10T10:00',
-    endDate:'2018-07-10T11:00',
-  userId:sessionStorage.getItem('userId')};
-    this.eventService.createEvent(ev).then((result) => {
-     this.todayEvents.push(ev);
+  newEvent(data) {
+
+     console.log(JSON.stringify(data))
+     
+     this.eventService.createEvent(data).then((result) => {
+     this.todayEvents.push(result);
       }, (err) => {
         console.log(err);
       });  
@@ -95,6 +93,7 @@ export class AgendaComponent implements OnInit {
 
 getUserEvents(){
   this.eventService.getUserTodayEvents().then((res) => {
+    console.log(res[0])
     this.todayEvents=res;
 });
 }

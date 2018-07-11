@@ -1,11 +1,16 @@
 var mongoose = require('mongoose');
+var User = require('../models/User.js');
+var Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId;
 
-var EventSchema = new mongoose.Schema({
+var EventSchema = new Schema({
     title: { type: String, required: true },
-    startDate: { type: String, required: true},
-    endDate: { type: String },
-    userId: { type: mongoose.Schema.Types.ObjectId }
-
+    start: { type: String, required: true },
+    end: { type: String },
+    user: [{
+        type: ObjectId,
+        ref: "User"
+    }]
 });
 
 module.exports = mongoose.model('event', EventSchema);

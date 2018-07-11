@@ -9,6 +9,19 @@ export class UserService {
 
   constructor(private http: Http) { }
  
+
+  doLogin(data){
+    
+    return new Promise((resolve, reject) => {
+    this.http.post(API_URL + '/api/user/login', data).pipe(map(res => res.json())).subscribe(res => {
+      resolve(res);
+    }, (err) => {
+      reject(err);
+    });
+  });
+  }
+
+
   getAllUsers() {
     return new Promise((resolve, reject) => {
         this.http.get(API_URL + '/api/user').pipe(map(res => res.json())).subscribe(res => {
