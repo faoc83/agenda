@@ -13,4 +13,10 @@ var EventSchema = new Schema({
     }]
 });
 
+EventSchema.pre('remove', function(next) {
+
+    User.remove({client_id: this._id}).exec();
+    next();
+});
+
 module.exports = mongoose.model('event', EventSchema);

@@ -1,49 +1,47 @@
-<div class="col-md-6">
 
+<div class="col-md-6">
+ 
     <p>Display event : {{displayEvent | json}}</p>
 
     <div *ngIf="calendarOptions">
         <ng-fullcalendar #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)" (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
-    </div>
-
+    </div> 
 </div>
+
+
 <div class="col-md-6">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Evento</th>
-                <th scope="col">Data Inicio</th>
-                <th scope="col">Data Fim</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th scope="row">{{displayEvent.event.id}}</th>
-                <td>{{displayEvent.event.title}}</td>
-                <td>{{displayEvent.event.start | date:'medium'}}</td>
-                <td>{{displayEvent.event.title | date:'medium'}}</td>
-                <td>
-                    <input type="text" #name value="{{displayEvent.event.id}}">
-                    <button (click)="deleteEvent(name.value)">Add to SELECT</button>
-                </td>
+        <form #userEvent="ngForm" class="form-event" (ngSubmit)="newEvent(userEvent.value)">
+                <div class="alert alert-warning alert-dismissible" role="alert" *ngIf="message !== ''">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> {{message}}
+                </div>
+                <div class="form-group">
+                        <label for="inputTitle">Titulo</label>
+                    <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Titulo" [(ngModel)]="title" required>
+                </div>
+                <div class="form-group">
+                        <label for="inputStartDate">Data Inicio</label>
+                   
+                        <input type="datetime-local" id="inputStartDate" name="startDate"  (ngModel)="startDate" value="{{ startDate | date: 'dd/MM/yyyy' }}" >
 
-                <td><button>Apagar</button> </td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+                <div class="form-group">
+                        <label for="inputEndDate">Data Fim</label>
+                        <input type="datetime-local" id="inputEndDate" name="endDate"  (ngModel)="endDate" value="{{ endDate | date: 'dd/MM/yyyy' }}" >
+                </div>
+                
+               <!--  <div class="form-group">
+                        <input type="checkbox" class="form-check-input" id="allDay">
+                        <label class="form-check-label" for="allDay" name="allDayEvent" value="false" ngModel>All Day</label>
+                      </div> -->
+                <button type="submit" class="btn btn-primary" *ngIf="!show">Criar Evento</button>
+             
+            </form>
+
+            <div class="form-group" *ngIf="show">
+                <button class="btn btn-primary" (click)="textValue=''" >Editar</button>
+                <button class="btn btn-default" (click)="show = false">Cancelar</button>
+                <input type="text" #name value="{{displayEvent.event.id}}">
+                <button class="btn btn-danger" (click)="deleteEvent(name.value)">Apagar</button>
+            </div>
 </div>
 
-<hr />
-<div class="row">
-    <div class="col-md-8 col-md-offset-1">
-        <p>Eventos para hoje</p>
-
-        <li *ngFor="let item of todayEvents">
-            {{item.title}}
-        </li>
-
-    </div>
-</div>

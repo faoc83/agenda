@@ -17,13 +17,13 @@
      username: 'CocusCeo',
      password: 'CocusCeo'
  });
- cocusUser.save().then((d) => {
-     console.log('deu ok')
+//  cocusUser.save().then((d) => {
+//      console.log('deu ok')
 
- }).catch((e) => {
+//  }).catch((e) => {
 
-     if (e) console.log(e)
- })
+//      if (e) console.log(e)
+//  })
 
  var app = express();
 

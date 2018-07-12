@@ -37,6 +37,7 @@ router.get('/user', function(req, res, next) {
 router.delete('/event/delete/:id', function(req, res) {
 
     Event.findByIdAndRemove(req.params.id, (err, ev) => {
+
         // As always, handle any potential errors:
         if (err) return res.status(500).send(err);
         // We'll create a simple object to send back with a message and the id of the document that was removed
@@ -54,7 +55,7 @@ router.get('/user/events/:id', function(req, res, next) {
     User.findById(req.params.id).populate('events').exec((err, user) => {
         console.log(user);
         if (err) return next(err);
-        res.json(user.events);
+        res.json(user.events); 
     })
 });
 
@@ -65,47 +66,33 @@ router.get('/event/todayEventByUser/:id/:today', function(req, res, next) {
     });
 });
 
-router.post('/event/create', function(req, res) {
-
-    User.findOne({ _id: '5b43d7d6f844183ef00480fd' }, function(err, u) {
 
 
+/**
+ * cria novo evento
+ */
+router.post('/event/create', function(req, res) {  
+
+    User.findOne({ _id: req.body.userId }, function(err, u) {
         if (err) {
             console.log(err)
         }
-        console.log(JSON.stringify(u))
-        var p = new Event();
-        p.title = "1212344";
-        p.start = "2018-07-11T10:00";
-        p.end = "2018-07-11T10:00";
-        p.user = u._id;
+  
+        var newEvent = new Event();
+        newEvent.title = req.body.title;
+        newEvent.start = req.body.start;
+        newEvent.end = req.body.end;
+        newEvent.user.push(u);
 
-        Event.create(p, (err, p1) => {
-            if (err) {
-                console.log("eroo:" + err)
-            }
+        Event.create(newEvent).then(p1=> {          
             u.events.push(p1);
             u.save().then(n => {
-                res.status(200).json({ 'adUnit': 'User added successfully' });
+                res.status(200).json(newEvent);
             })
+        }).catch(e=>{          
+            res.status(400).send('Erro:'+e);
         })
     });
-
-    /* p.title = req.body.title;
-    p.startDate = req.body.startDate;
-    p.endDate = req.body.endDate;
-    p.sDate = req.body.sDate;
-    p.userId = req.body.userId */
-
-
-    // p.save().then(n => {
-    //         res.status(200).json({ 'adUnit': 'AdUnit in added successfully' });
-    //     })
-    //     .catch(err => {
-    //         console.log(err)
-    //         res.status(400).send("unable to save to database");
-    //     });
-
 });
 // Return router
 module.exports = router;
