@@ -1,14 +1,6 @@
-<app-header></app-header>
-<div class="row">
-    <div class="col-md-4">
-        <p>Eventos para hoje</p>
 
-        <li *ngFor="let item of todayEvents">
-            {{item.title}}
-        </li>
-
-    </div>
     <div class="col-md-6">
+        
         <p>Display event : {{displayEvent | json}}</p>
 
         <div *ngIf="calendarOptions">
@@ -16,27 +8,43 @@
         </div>
 
     </div>
+    <div class="col-md-6">
+            <table class="table table-striped" >
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Evento</th>
+                        <th scope="col">Data Inicio</th>
+                        <th scope="col">Data Fim</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">{{displayEvent.event.id}}</th>
+                        <td>{{displayEvent.event.title}}</td>
+                        <td>{{displayEvent.event.start | date:'medium'}}</td>
+                        <td>{{displayEvent.event.title | date:'medium'}}</td>
+                        <td>
+                                <input type="text" #name value="{{displayEvent.event.id}}">
+                         <button (click)="deleteEvent(name.value)">Add to SELECT</button>
+                        </td>
+                    
+                            <td><button>Apagar</button> </td>
+                      </tr>
+                     </tbody>
+                  </table>
+        </div>
+
+<hr />
+<div class="row">
+<div class="col-md-8 col-md-offset-1">
+        <p>Eventos para hoje</p>
+
+        <li *ngFor="let item of todayEvents">
+            {{item.title}}
+        </li>
+
 </div>
-
-<div class="col-md-4">
-    <form #newEventF="ngForm" (ngSubmit)="newEvent(newEventF.value)">
-        <div class="form-group">
-            <input type="text" class="form-control" id="inputUsername" name="descricao" placeholder="Descricao" ngModel>
-        </div>
-        <div class="form-group">
-            <input type="date" id="inputStartDt" name="startDate" placeholder="Start date" ngModel value="{{ startDate | date: 'dd/MM/yyyy' }}">
-            <input type="time" id="start-time" name="startTime" ngModel/>
-        </div>
-
-        <div class="form-group">
-            <input type="date" id="inputStartDt" name="endDate" placeholder="End date" ngModel value="{{ endDate | date: 'dd/MM/yyyy' }}">
-            <input type="time" id="end-time" name="endTime" ngModel/>
-        </div>
-        <!--         <div *ngFor="let skill of contacts; let i=index">
-                        <input type="checkbox" /> {{skill.name}}
-                </div>
-         -->
-        <button type="submit" class="btn btn-primary">Novo Evento</button>
-    </form>
-
 </div>

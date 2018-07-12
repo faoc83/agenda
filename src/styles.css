@@ -1,5 +1,11 @@
 body {
-    background: #eee;
+    background: #c0cbe4;
+}
+
+.container{
+    background: white;
+    margin-top: 25px;
+    padding-top: 25px;
 }
 
 .wrapper {

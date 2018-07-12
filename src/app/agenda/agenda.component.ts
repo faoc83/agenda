@@ -14,9 +14,8 @@ import { JSDocCommentStmt } from '../../../node_modules/@angular/compiler';
 export class AgendaComponent implements OnInit {
   isUserLoggedIn:true;
   calendarOptions: Options;
-  displayEvent: any;
+  displayEvent: any=null;
   todayEvents:any;
-  contacts:any;
   @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
   constructor(protected eventService: EventSesrvice, protected userService:UserService) { }
@@ -37,11 +36,7 @@ export class AgendaComponent implements OnInit {
       };
     });
 
-    this.userService.getAllUsers().then((res)=>{
-      this.contacts=res;
-    })
-
-    this.getUserEvents();
+ 
 
   }
   clickButton(model: any) {
@@ -51,18 +46,17 @@ export class AgendaComponent implements OnInit {
   eventClick(model: any) {
     model = {
       event: {
-        id: model.event.id,
+        id: model.event._id,
         start: model.event.start,
         end: model.event.end,
         title: model.event.title,
-        allDay: model.event.allDay
-        // other params
-      },
-      duration: {}
+        allDay: model.event.allDay      
+      }
     }
     this.displayEvent = model;
   }
   updateEvent(model: any) {
+
     model = {
       event: {
         id: model.event.id,
@@ -91,10 +85,15 @@ export class AgendaComponent implements OnInit {
       });  
  }
 
-getUserEvents(){
-  this.eventService.getUserTodayEvents().then((res) => {
-    console.log(res[0])
-    this.todayEvents=res;
-});
-}
+ deleteEvent(data){
+   console.log("entra")
+  this.eventService.deleteEvent(data).then((result) => {
+  
+     }, (err) => {
+       console.log(err);
+     });  
+ }
+
+
+
 }

@@ -28,14 +28,20 @@ router.get('/user', function(req, res, next) {
     });
 });
 
+router.delete('/event/delete/:id', function(req, res) {
 
-/* GET ALL Events */
-router.get('/event', function(req, res, next) {
-    Event.find({}, function(err, users) {
-        if (err) return next(err);
-        res.json(users);
+    Event.findByIdAndRemove(req.params.id, (err, ev) => {  
+        // As always, handle any potential errors:
+        if (err) return res.status(500).send(err);
+        // We'll create a simple object to send back with a message and the id of the document that was removed
+        // You can really do this however you want, though.
+        const response = {
+            message: "Event successfully deleted",
+            id: ev._id
+        };
+        return res.status(200).send(response);
     });
-});
+})
 
 /* GET ALL User Events */
 router.get('/user/events/:id', function(req, res, next) {
@@ -55,7 +61,7 @@ router.get('/event/todayEventByUser/:id/:today', function(req, res, next) {
 
 router.post('/event/create', function(req, res) {
 
-    User.findOne({ _id: '5b45e33a673c3612a493aa02' }, function(err, u) {
+    User.findOne({ _id: '5b43d7d6f844183ef00480fd' }, function(err, u) {
 
 
         if (err) {

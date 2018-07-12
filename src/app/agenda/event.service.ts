@@ -24,7 +24,7 @@ export class EventSesrvice {
       }
 
       getUserEvents() {
-        var userId = "5b45e33a673c3612a493aa02";
+        var userId = "5b43d7d6f844183ef00480fd";
         return new Promise((resolve, reject) => {
             this.http.get(API_URL + '/api/user/events/'+userId).pipe(map(res => res.json())).subscribe(res => {
               console.log("eventos: "+JSON.stringify(res))
@@ -35,21 +35,6 @@ export class EventSesrvice {
         });
       }
 
-      getUserTodayEvents() {
-        var userId = "5b45e33a673c3612a493aa02";
-        const dateObj = new Date();
-        const yearMonth = dateObj.getUTCFullYear() + '-' + ("0" + (dateObj.getUTCMonth() + 1)).slice(-2)
-                            + '-' + ("0" + dateObj.getDate()).slice(-2);
-
-        return new Promise((resolve, reject) => {
-            this.http.get(API_URL + '/api/event/todayEventByUser/'+ userId +'/'+ yearMonth).pipe(map(res => res.json())).subscribe(res => {
-                resolve(res);
-                const data: any = res
-              }, (err) => {
-                reject(err);
-              });
-        });
-      }
 
       createEvent(data) {
   
@@ -60,6 +45,20 @@ export class EventSesrvice {
          
         return new Promise((resolve, reject) => {
             this.http.post(API_URL + '/api/event/create', data)
+              .pipe(map(res => res.json()))
+              .subscribe(res => {
+                resolve(res);
+              }, (err) => {
+                reject(err);
+              });
+        });
+      }
+
+
+      deleteEvent(eventId){
+          console.log("-----"+eventId)
+        return new Promise((resolve, reject) => {
+            this.http.delete(API_URL + '/api/event/delete/'+eventId)
               .pipe(map(res => res.json()))
               .subscribe(res => {
                 resolve(res);
