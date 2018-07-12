@@ -4,11 +4,12 @@ var router = express.Router();
 var User = require('../models/User.js');
 var Event = require('../models/Event.js');
 
+
 // Models
 router.post('/user/login', function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
-    User.findOne({ username: username, password: password }, function(err, user) {
+    User.findOne({ username: username }, function(err, user) {
         if (err) {
             return res.status(500).send()
         }
@@ -17,7 +18,12 @@ router.post('/user/login', function(req, res, next) {
             return res.status(404).send()
         }
 
-        return res.status(200).send(user._id);
+        user.comparePassword(password, function(err, isMatch) {
+            if (err) throw err;
+            console.log('Password:', isMatch);
+        });
+
+        return res.status(200).send(user);
     });
 });
 
@@ -30,7 +36,7 @@ router.get('/user', function(req, res, next) {
 
 router.delete('/event/delete/:id', function(req, res) {
 
-    Event.findByIdAndRemove(req.params.id, (err, ev) => {  
+    Event.findByIdAndRemove(req.params.id, (err, ev) => {
         // As always, handle any potential errors:
         if (err) return res.status(500).send(err);
         // We'll create a simple object to send back with a message and the id of the document that was removed
@@ -68,7 +74,6 @@ router.post('/event/create', function(req, res) {
             console.log(err)
         }
         console.log(JSON.stringify(u))
-
         var p = new Event();
         p.title = "1212344";
         p.start = "2018-07-11T10:00";

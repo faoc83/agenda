@@ -1,6 +1,10 @@
+
 import { UserService } from './../user.service';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Input } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup} from '../../../node_modules/@angular/forms';
+import { AuthService } from '../auth.service';
+
 
 @Component({
   selector: 'app-login',
@@ -8,35 +12,33 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-users:any;
-isUserLoggedIn:false;
-  constructor(private userService: UserService, private router: Router) { }
+loginForm: FormGroup;
+@Input() message='';
+
+  constructor(private route: ActivatedRoute,private userService: UserService,private authService: AuthService,
+              private router: Router) { }
   
   ngOnInit() {
-    this.getUsersList();
   }
-
-  /**
-   * load users
-   */
-  getUsersList() {
-    this.userService.getAllUsers().then((res) => {
-      this.users = res;
-    });
-  }
+  
 
   /**
    * get data from login form and do login
-   * @param data 
+   * @param data
    */
-  doLogin(data) {
-    this.userService.doLogin(data).then(id => {
-      sessionStorage.setItem('userId',id.toString());
-
-    }).catch(e=> {
-      console.log("Error: "+e)
+ doLogin(data) {
+ 
+     this.userService.doLogin(data).then(u => {
+      // sessionStorage.setItem('userId',u);
+       this.authService.login();
+     }).catch(e=> {
+       this.message="Erro ao fazer login. Tente de novo"
+       console.log("Error: "+e)
     })
-
  }
+
+
+
+
 
 }

@@ -24,7 +24,7 @@ export class EventSesrvice {
       }
 
       getUserEvents() {
-        var userId = "5b43d7d6f844183ef00480fd";
+        var userId = "5b45e33a673c3612a493aa02";
         return new Promise((resolve, reject) => {
             this.http.get(API_URL + '/api/user/events/'+userId).pipe(map(res => res.json())).subscribe(res => {
               console.log("eventos: "+JSON.stringify(res))

@@ -4,13 +4,26 @@
  var bodyParser = require('body-parser');
  var mongoose = require('mongoose');
  var cors = require('cors');
-
+ var User = require('./server/models/User.js');
 
  mongoose.Promise = global.Promise;
  mongoose.connect('mongodb://localhost:27017/cocus', {
      useMongoClient: true
  });
 
+
+ var cocusUser = new User({
+     name: 'CocusCeo',
+     username: 'CocusCeo',
+     password: 'CocusCeo'
+ });
+ cocusUser.save().then((d) => {
+     console.log('deu ok')
+
+ }).catch((e) => {
+
+     if (e) console.log(e)
+ })
 
  var app = express();
 

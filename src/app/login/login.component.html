@@ -2,15 +2,19 @@
     <h3>Login</h3>
     <hr />
     <form #userlogin="ngForm" class="form-signin" (ngSubmit)="doLogin(userlogin.value)">
-        <div class="form-group">
-           
-            <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username" ngModel>
+        <div class="alert alert-warning alert-dismissible" role="alert" *ngIf="message !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> {{message}}
         </div>
         <div class="form-group">
-           
-            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" ngModel>
+
+            <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username" ngModel required>
+        </div>
+        <div class="form-group">
+
+            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" ngModel required>
         </div>
 
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
+
 </div>

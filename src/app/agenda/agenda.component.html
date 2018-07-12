@@ -1,50 +1,49 @@
+<div class="col-md-6">
 
-    <div class="col-md-6">
-        
-        <p>Display event : {{displayEvent | json}}</p>
+    <p>Display event : {{displayEvent | json}}</p>
 
-        <div *ngIf="calendarOptions">
-            <ng-fullcalendar #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)" (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
-        </div>
-
+    <div *ngIf="calendarOptions">
+        <ng-fullcalendar #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)" (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
     </div>
-    <div class="col-md-6">
-            <table class="table table-striped" >
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Evento</th>
-                        <th scope="col">Data Inicio</th>
-                        <th scope="col">Data Fim</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">{{displayEvent.event.id}}</th>
-                        <td>{{displayEvent.event.title}}</td>
-                        <td>{{displayEvent.event.start | date:'medium'}}</td>
-                        <td>{{displayEvent.event.title | date:'medium'}}</td>
-                        <td>
-                                <input type="text" #name value="{{displayEvent.event.id}}">
-                         <button (click)="deleteEvent(name.value)">Add to SELECT</button>
-                        </td>
-                    
-                            <td><button>Apagar</button> </td>
-                      </tr>
-                     </tbody>
-                  </table>
-        </div>
+
+</div>
+<div class="col-md-6">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Evento</th>
+                <th scope="col">Data Inicio</th>
+                <th scope="col">Data Fim</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">{{displayEvent.event.id}}</th>
+                <td>{{displayEvent.event.title}}</td>
+                <td>{{displayEvent.event.start | date:'medium'}}</td>
+                <td>{{displayEvent.event.title | date:'medium'}}</td>
+                <td>
+                    <input type="text" #name value="{{displayEvent.event.id}}">
+                    <button (click)="deleteEvent(name.value)">Add to SELECT</button>
+                </td>
+
+                <td><button>Apagar</button> </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <hr />
 <div class="row">
-<div class="col-md-8 col-md-offset-1">
+    <div class="col-md-8 col-md-offset-1">
         <p>Eventos para hoje</p>
 
         <li *ngFor="let item of todayEvents">
             {{item.title}}
         </li>
 
-</div>
+    </div>
 </div>

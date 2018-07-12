@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
 import { EventSesrvice } from './event.service';
@@ -14,8 +14,9 @@ import { JSDocCommentStmt } from '../../../node_modules/@angular/compiler';
 export class AgendaComponent implements OnInit {
   isUserLoggedIn:true;
   calendarOptions: Options;
-  displayEvent: any=null;
+  displayEvent: any;
   todayEvents:any;
+  contacts:any;
   @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
   constructor(protected eventService: EventSesrvice, protected userService:UserService) { }
@@ -36,27 +37,30 @@ export class AgendaComponent implements OnInit {
       };
     });
 
- 
+    this.userService.getAllUsers().then((res)=>{
+      this.contacts=res;
+    })
+
 
   }
   clickButton(model: any) {
     this.displayEvent = model;
   }
-
   eventClick(model: any) {
     model = {
       event: {
-        id: model.event._id,
+        id: model.event.id,
         start: model.event.start,
         end: model.event.end,
         title: model.event.title,
-        allDay: model.event.allDay      
-      }
+        allDay: model.event.allDay
+        // other params
+      },
+      duration: {}
     }
     this.displayEvent = model;
   }
   updateEvent(model: any) {
-
     model = {
       event: {
         id: model.event.id,
@@ -84,16 +88,6 @@ export class AgendaComponent implements OnInit {
         console.log(err);
       });  
  }
-
- deleteEvent(data){
-   console.log("entra")
-  this.eventService.deleteEvent(data).then((result) => {
-  
-     }, (err) => {
-       console.log(err);
-     });  
- }
-
 
 
 }
