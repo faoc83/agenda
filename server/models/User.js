@@ -14,7 +14,7 @@ var UserSchema = new Schema({
         type: ObjectId,
         ref: 'event'
     }]
-}, { usePushEach: true });
+}, { usePushEach: true, timestamps: { createdAt: 'created_at' } });
 
 
 UserSchema.pre('save', function(next) {

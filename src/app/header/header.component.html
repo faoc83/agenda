@@ -1,8 +1,9 @@
-<nav class="navbar  navbar-dark bg-inverse" >
+<nav class="navbar  navbar-dark bg-inverse">
     <div class="container">
         <a class="navbar-brand">Cocus Agenda</a>
+        <label>{{name}}</label>
         <ul class="nav navbar-nav" routerLinkActive="active">
-           <li class="nav-item"><a class="nav-link" routerLink="login">Logout</a></li>
+            <button class="btn btn-danger" (click)="doLogout()">Logout</button>
         </ul>
     </div>
 </nav>

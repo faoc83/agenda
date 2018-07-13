@@ -34,28 +34,44 @@ router.get('/user', function(req, res, next) {
     });
 });
 
+/**
+ * remove evento e atualiza lista de eventos do utilizador
+ */
 router.delete('/event/delete/:id', function(req, res) {
 
-    Event.findByIdAndRemove(req.params.id, (err, ev) => {
-
-        // As always, handle any potential errors:
+    Event.findById(req.params.id, (err, ev) => {
+        console.log("encontra evento: " + ev)
         if (err) return res.status(500).send(err);
-        // We'll create a simple object to send back with a message and the id of the document that was removed
-        // You can really do this however you want, though.
-        const response = {
-            message: "Event successfully deleted",
-            id: ev._id
-        };
-        return res.status(200).send(response);
+        ev.remove().then(() => {
+            const response = {
+                message: "Event successfully deleted",
+                id: ev._id
+            };
+
+
+            return res.status(200).send(response);
+        }).catch((e) => {
+            console.log(e)
+            return res.status(500).send("erro");
+        })
+
     });
+
+
+
 })
 
 /* GET ALL User Events */
 router.get('/user/events/:id', function(req, res, next) {
     User.findById(req.params.id).populate('events').exec((err, user) => {
-        console.log(user);
+
         if (err) return next(err);
-        res.json(user.events); 
+        if (user.events) {
+            res.json(user.events);
+        } else {
+            res.json(null);
+        }
+
     })
 });
 
@@ -71,26 +87,26 @@ router.get('/event/todayEventByUser/:id/:today', function(req, res, next) {
 /**
  * cria novo evento
  */
-router.post('/event/create', function(req, res) {  
+router.post('/event/create', function(req, res) {
 
     User.findOne({ _id: req.body.userId }, function(err, u) {
         if (err) {
             console.log(err)
         }
-  
+
         var newEvent = new Event();
         newEvent.title = req.body.title;
         newEvent.start = req.body.start;
         newEvent.end = req.body.end;
         newEvent.user.push(u);
 
-        Event.create(newEvent).then(p1=> {          
+        Event.create(newEvent).then(p1 => {
             u.events.push(p1);
             u.save().then(n => {
                 res.status(200).json(newEvent);
             })
-        }).catch(e=>{          
-            res.status(400).send('Erro:'+e);
+        }).catch(e => {
+            res.status(400).send('Erro:' + e);
         })
     });
 });

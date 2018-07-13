@@ -1,5 +1,5 @@
-//import { AuthService } from './auth.service';
-
+import { FooterComponent } from '../shared/footer/footer.component';
+import { AuthService } from './auth.service';
 import { UserService } from './user.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -13,15 +13,14 @@ import { AgendaComponent } from './agenda/agenda.component';
 import { EventSesrvice } from './agenda/event.service';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { HeaderComponent } from './header/header.component';
-//import { AuthGuard } from './authguard.service';
+import { AuthGuard } from './authguard.service';
 
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login' , pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
-  //{ path: 'agenda', component: AgendaComponent,canActivate: [AuthGuard]},
-  { path: 'agenda', component: AgendaComponent},
-  { path: '**', redirectTo: '' }
+  { path: 'agenda', component: AgendaComponent, canActivate: [AuthGuard]},
+  { path: '**', component:LoginComponent }
 
 ];
 
@@ -30,7 +29,8 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     AgendaComponent,
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -41,9 +41,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes)
   ],
   providers: [
-    UserService,EventSesrvice, {provide: LocationStrategy, useClass: HashLocationStrategy}],
-
-   // UserService, AuthService, AuthGuard,EventSesrvice, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+   UserService, AuthService, AuthGuard,EventSesrvice, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

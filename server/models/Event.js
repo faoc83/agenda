@@ -11,12 +11,12 @@ var EventSchema = new Schema({
         type: ObjectId,
         ref: "User"
     }]
-});
+}, { timestamps: { createdAt: 'created_at' } });
 
 EventSchema.pre('remove', function(next) {
-
-    User.remove({client_id: this._id}).exec();
-    next();
+    this.model('user').update({ events: this._id }, { $pull: { events: this._id } }, { multi: true },
+        next
+    );
 });
 
 module.exports = mongoose.model('event', EventSchema);
