@@ -1,9 +1,11 @@
-import {  AuthService } from '../auth.service';
+import { AuthService } from './../services/auth.service';
+import { AlertService } from '../services/alert.service';
 
-import { UserService } from '../user.service';
+import { UserService } from '../services/user.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup} from '@angular/forms';
+import { IUser } from '../interface/IUser';
 
 
 
@@ -18,7 +20,7 @@ loginForm: FormGroup;
 
 
   constructor(private route: ActivatedRoute,private userService: UserService,
-              private router: Router,private authService: AuthService) { }
+              private router: Router,private authService: AuthService,private alertService:AlertService) { }
   
   ngOnInit() {
   }
@@ -29,11 +31,12 @@ loginForm: FormGroup;
    * @param data
    */
  doLogin(data) {
-     this.userService.doLogin(data).then(u => {
-       sessionStorage.setItem('userId', u.id);
+     this.userService.doLogin(data).then(u =>{
+       
        this.authService.login();
+      localStorage.setItem('userId', u.id);
      }).catch(e=> {
-       this.message="Erro ao fazer login. Tente de novo"
+       this.alertService.error("Erro ao fazer login. Tente de novo");
        console.log("Error: "+e)
     })
  }

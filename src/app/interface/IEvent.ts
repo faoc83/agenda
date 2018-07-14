@@ -3,4 +3,5 @@ export interface IEvent{
     start:string,
     end:string,
     userId:string
+    allDay:boolean
 }

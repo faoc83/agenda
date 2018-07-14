@@ -1,10 +1,10 @@
+import { AlertService } from '../services/alert.service';
 import { IEvent } from '../interface/IEvent';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
-import { EventSesrvice } from './event.service';
-import { UserService } from '../user.service';
-import { JSDocCommentStmt } from '@angular/compiler';
+import { EventSesrvice } from '../services/event.service';
+import { UserService } from '../services/user.service';
 
 
 @Component({
@@ -24,14 +24,15 @@ export class AgendaComponent implements OnInit {
   show: boolean = false;
   events: any;
   userId = null;
-  eventId=null;
+  eventId = null;
+  @Input() allDay = false;
   @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
-  constructor(protected eventService: EventSesrvice, protected userService: UserService) { }
+  constructor(protected eventService: EventSesrvice, protected userService: UserService, private alertService: AlertService) { }
 
   ngOnInit() {
-    this.userId = sessionStorage.getItem('userId');
-   
+    this.userId = localStorage.getItem('userId');
+
     this.eventService.getUserEvents(this.userId).then((res) => {
       this.calendarOptions = {
         eventLimit: false,
@@ -50,7 +51,7 @@ export class AgendaComponent implements OnInit {
     this.eventService.getUserEvents(this.userId).then((res) => {
       this.events = res;
       console.log(JSON.stringify(this.events))
-    }).catch(e=>{
+    }).catch(e => {
       console.log("Error loading event data.")
     });
   }
@@ -66,14 +67,16 @@ export class AgendaComponent implements OnInit {
    * @param model
    */
   eventClick(model: any) {
+
     this.show = true;
     this.title = model.event.title
     this.startDate = model.event.start.format('YYYY-MM-DD');
-    this.startDateT = model.event.start.format("hh:mm");
-    this.endDate = model.event.end.format('YYYY-MM-DD');
-    this.endDateT = model.event.end.format("hh:mm");
-    this.eventId=model.event._id;
-    
+    this.startDateT =model.event.allDay?'': model.event.start.format("hh:mm");
+    this.endDate =model.event.allDay?'': model.event.end.format('YYYY-MM-DD');
+    this.endDateT = model.event.allDay?'':model.event.end.format("hh:mm");
+    this.eventId = model.event._id;
+    this.allDay=model.event.allDay
+
   }
 
   /**
@@ -86,7 +89,8 @@ export class AgendaComponent implements OnInit {
     this.startDateT = '';
     this.endDate = '';
     this.endDateT = '';
-    this.eventId=null;
+    this.eventId = null;
+    this.allDay=false;
   }
 
 
@@ -94,50 +98,80 @@ export class AgendaComponent implements OnInit {
    * create new event
    * @param data 
    */
-  newEvent(data) {
+  onSubmitEvent(data) {
+    try {
+      let initDate;
+      let endDate;
+      
+      if (data.startDateT && data.startDateT != '') {
+       
+        initDate = data.startDate + 'T' + data.startDateT;
+        endDate = data.endDate + 'T' + data.endDateT;
+      } else {
+        console.log("entra data ok n ok")
+        initDate = data.startDate;
+        endDate ='';
+        this.allDay = true
+      }
 
-    const ievent: IEvent = {
-      title: data.title,
-      start: data.startDate + 'T' + data.startDateT,
-      end: data.endDate + 'T' + data.endDateT,
-      userId: this.userId
+      if (new Date(initDate) > new Date(endDate)) {
+        throw 'End Date must be after Initial Date!'
+      }
+
+      const eventObj: IEvent = {
+        title: data.title,
+        start: initDate,
+        end: endDate,
+        userId: this.userId,
+        allDay: this.allDay
+      }
+
+      if(this.eventId){
+        this.editEvent(this.eventId,eventObj)
+      }else{
+        this.createNewEvent(eventObj)
+      }
+    } catch (error) {
+      this.alertService.error(error)
     }
 
-    this.eventService.createEvent(ievent).then((result) => {
-      this.message = 'Evento criado com sucesso';
+  }
+
+
+  createNewEvent(eventObj){
+    console.log('create new event')
+    this.eventService.createEvent(eventObj).then((result) => {
+      this.alertService.success('Event ' + eventObj.title + ' created!')
       this.loadEvents();
+      this.cancelEditEvent();
     }, (err) => {
-      this.message = "Error creating Event!";
+      this.alertService.error("Error creating Event!")
       console.log(err);
     });
   }
 
-
-  updateEvent(data) {
-      this.eventService.updateEvent(this.eventId).then(res => {
-      this.message = 'Event successfully updated!';
-      
-      this.cancelEditEvent();
+  editEvent(eventId,eventObj){
+    console.log('edit event')
+    this.eventService.updateEvent(eventId,eventObj).then((result) => {
+      this.alertService.success('Event ' + eventObj.title + ' edited!')
       this.loadEvents();
-    }).catch(e => {
-      this.message = 'Error deleting event!';
-    })
+      this.cancelEditEvent();
+    }, (err) => {
+      this.alertService.error("Error creating Event!")
+      console.log(err);
+    });
   }
-
-
-
 
   /**
    * delete event;
    */
   deleteEvent() {
     this.eventService.deleteEvent(this.eventId).then(res => {
-      this.message = 'Event successfully deleted!';
-      
+      this.alertService.success("Event deleted!")
       this.cancelEditEvent();
       this.loadEvents();
     }).catch(e => {
-      this.message = 'Error deleting event!';
+      this.alertService.error("Error deleting Event!")
     })
   }
 

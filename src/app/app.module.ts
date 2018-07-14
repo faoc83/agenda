@@ -1,6 +1,8 @@
+import { AuthService } from './services/auth.service';
+import { AlertComponent } from './_directives/alert.component';
+import { AlertService } from './services/alert.service';
 import { FooterComponent } from '../shared/footer/footer.component';
-import { AuthService } from './auth.service';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -10,17 +12,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AgendaComponent } from './agenda/agenda.component';
-import { EventSesrvice } from './agenda/event.service';
+import { EventSesrvice } from './services/event.service';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { HeaderComponent } from './header/header.component';
-import { AuthGuard } from './authguard.service';
+import { AuthGuard } from './services/authguard.service';
 
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login' , pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
   { path: 'agenda', component: AgendaComponent, canActivate: [AuthGuard]},
-  { path: '**', component:LoginComponent }
+  { path: '*', component:LoginComponent }
 
 ];
 
@@ -30,7 +32,8 @@ const appRoutes: Routes = [
     LoginComponent,
     AgendaComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +44,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes)
   ],
   providers: [
-   UserService, AuthService, AuthGuard,EventSesrvice, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+   UserService, AuthService,AlertService, AuthGuard,EventSesrvice, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

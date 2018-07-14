@@ -40,19 +40,11 @@ router.get('/user', function(req, res, next) {
 router.delete('/event/delete/:id', function(req, res) {
 
     Event.findById(req.params.id, (err, ev) => {
-        console.log("encontra evento: " + ev)
         if (err) return res.status(500).send(err);
-        ev.remove().then(() => {
-            const response = {
-                message: "Event successfully deleted",
-                id: ev._id
-            };
-
-
-            return res.status(200).send(response);
+        ev.remove().then(() => {      
+            return res.status(200).send("Event successfully deleted");
         }).catch((e) => {
-            console.log(e)
-            return res.status(500).send("erro");
+            return res.status(500).send("Error deleting Event");
         })
 
     });
@@ -75,17 +67,9 @@ router.get('/user/events/:id', function(req, res, next) {
     })
 });
 
-router.get('/event/todayEventByUser/:id/:today', function(req, res, next) {
-    Event.find({ userId: req.params.id, startDate: { $regex: req.params.today + '.*' } }, function(err, e) {
-        if (err) return next(err);
-        res.json(e);
-    });
-});
-
-
 
 /**
- * cria novo evento
+ * Create new event
  */
 router.post('/event/create', function(req, res) {
 
@@ -98,6 +82,7 @@ router.post('/event/create', function(req, res) {
         newEvent.title = req.body.title;
         newEvent.start = req.body.start;
         newEvent.end = req.body.end;
+        newEvent.allDay= req.body.allDay;
         newEvent.user.push(u);
 
         Event.create(newEvent).then(p1 => {
@@ -108,6 +93,28 @@ router.post('/event/create', function(req, res) {
         }).catch(e => {
             res.status(400).send('Erro:' + e);
         })
+    });
+});
+
+
+
+router.put('/event/update/:id', function(req, res) {
+    Event.findOneAndUpdate(req.params.id,
+        {
+            title:req.body.title,
+            start : req.body.start,
+            end : req.body.end,
+            allDay: req.body.allDay      
+        },  
+        function(err, response){
+                if (err) {
+                    res.status(400).send(err);
+                } else {
+                    res.status(200).send('Event updated!');
+
+                }
+     
+        
     });
 });
 // Return router

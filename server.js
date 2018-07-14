@@ -17,13 +17,36 @@
      username: 'CocusCeo',
      password: 'CocusCeo'
  });
-//  cocusUser.save().then((d) => {
-//      console.log('deu ok')
 
-//  }).catch((e) => {
+ var user1 = new User({
+    name: 'Cocus User1',
+    username: 'User1',
+    password: 'User1'
+});
 
-//      if (e) console.log(e)
-//  })
+var user2 = new User({
+    name: 'Cocus User2',
+    username: 'User2',
+    password: 'User2'
+});
+
+var user3 = new User({
+    name: 'Cocus User3',
+    username: 'User3',
+    password: 'User3'
+});
+
+ User.findOne({username:'CocusCeo'}).then((u)=>{
+     if(!u){
+        cocusUser.save().then((d) => {
+            console.log('Default User Created')       
+        }).catch((e) => {
+            if (e) console.log(e)
+        })
+     }
+ 
+ })
+
 
  var app = express();
 

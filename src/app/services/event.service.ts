@@ -45,11 +45,11 @@ export class EventSesrvice {
    */
   deleteEvent(eventId) {
     return new Promise((resolve, reject) => {
-      this.http.delete(API_URL + '/api/event/delete/' + eventId)
-        .pipe(map(res => res.json()))
-        .subscribe(res => {
+      this.http.delete(API_URL + '/api/event/delete/' + eventId).pipe(map(res => res)).subscribe(res => {
+          
           resolve(res);
         }, (err) => {
+   
           reject(err);
         });
     });
@@ -62,9 +62,8 @@ export class EventSesrvice {
    */
   updateEvent(eventId,data) {
     return new Promise((resolve, reject) => {
-      this.http.put(API_URL + '/api/event/delete/' + eventId,data)
-        .pipe(map(res => res.json()))
-        .subscribe(res => {
+      this.http.put(API_URL + '/api/event/update/' + eventId,data)
+        .pipe().subscribe(res => {
           resolve(res);
         }, (err) => {
           reject(err);

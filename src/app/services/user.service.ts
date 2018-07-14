@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http} from '@angular/http'
 import { map } from 'rxjs/operators';
-import { environment } from '../environments/environment';
-import { IUser } from './interface/IUser';
+import { environment } from '../../environments/environment';
+import { IUser } from '../interface/IUser';
 const API_URL = environment.apiUrl;
 
 @Injectable()

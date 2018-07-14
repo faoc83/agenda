@@ -1,16 +1,16 @@
 <div class="wrapper">
-    <h3>Login</h3>
-    <hr />
+   
     <form #userlogin="ngForm" class="form-signin" (ngSubmit)="doLogin(userlogin.value)">
+            <h1 class="form-signin-heading">Login</h1>
         <div class="alert alert-warning alert-dismissible" role="alert" *ngIf="message !== ''">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> {{message}}
         </div>
-        <div class="form-group">
-
+        <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
             <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username" ngModel required>
         </div>
-        <div class="form-group">
-
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
             <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" ngModel required>
         </div>
 
