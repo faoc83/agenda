@@ -1,7 +1,6 @@
 import { AuthService } from './services/auth.service';
 import { AlertComponent } from './_directives/alert.component';
 import { AlertService } from './services/alert.service';
-import { FooterComponent } from '../shared/footer/footer.component';
 import { UserService } from './services/user.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -16,6 +15,7 @@ import { EventSesrvice } from './services/event.service';
 import { FullCalendarModule } from 'ng-fullcalendar';
 import { HeaderComponent } from './header/header.component';
 import { AuthGuard } from './services/authguard.service';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 const appRoutes: Routes = [
@@ -32,7 +32,6 @@ const appRoutes: Routes = [
     LoginComponent,
     AgendaComponent,
     HeaderComponent,
-    FooterComponent,
     AlertComponent
   ],
   imports: [
@@ -41,6 +40,7 @@ const appRoutes: Routes = [
     FullCalendarModule,
     ReactiveFormsModule,
     FormsModule,
+    NgbModule.forRoot(),
     RouterModule.forRoot(appRoutes)
   ],
   providers: [

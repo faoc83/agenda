@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
-var Event = require('../models/Event.js');
+var User = require('../models/User.js');
 var bcrypt = require('bcrypt');
+
+
 SALT_WORK_FACTOR = 10;
 
 var Schema = mongoose.Schema,
@@ -9,11 +11,7 @@ var Schema = mongoose.Schema,
 var UserSchema = new Schema({
     name: String,
     username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    events: [{
-        type: ObjectId,
-        ref: 'event'
-    }]
+    password: { type: String, required: true }
 }, { usePushEach: true, timestamps: { createdAt: 'created_at' } });
 
 

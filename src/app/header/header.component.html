@@ -1,9 +1,12 @@
- 
-
 <nav class="navbar  navbar-dark">
-    <div class="col-md-10">
-        <a class="navbar-brand">Cocus Agenda</a>
-        <label>{{name}}</label>
-        <button type="button" class="btn btn-link" (click)="doLogout()">Logout</button>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            <a class="navbar-brand">{{title}}</a>
+        </div>
+        <div class="col-md-3 pull-right">
+            <label id="lb-welcome">
+                <span>Welcome</span> {{username}}</label>
+            <button type="button" class="btn btn-link" id="bt-logout" (click)="doLogout()">Logout</button>
+        </div>
     </div>
 </nav>

@@ -11,17 +11,19 @@ router.post('/user/login', function(req, res, next) {
     var password = req.body.password;
     User.findOne({ username: username }, function(err, user) {
         if (err) {
-            return res.status(500).send()
+            console.log("Login Error "+err)
+            return res.status(500).send("Login Error!")
         }
 
         if (!user) {
-            return res.status(404).send()
+            return res.status(404).send("Login Error! User not found.")
         }
 
         user.comparePassword(password, function(err, isMatch) {
             if (err) throw err;
-            console.log('Password:', isMatch);
+           
         });
+
 
         return res.status(200).send(user);
     });
@@ -54,19 +56,24 @@ router.delete('/event/delete/:id', function(req, res) {
 })
 
 /* GET ALL User Events */
-router.get('/user/events/:id', function(req, res, next) {
-    User.findById(req.params.id).populate('events').exec((err, user) => {
-
+router.get('/events/user/:id', function(req, res, next) {
+    Event.find({ createdBy: req.params.id}).exec((err, events) => {
         if (err) return next(err);
-        if (user.events) {
-            res.json(user.events);
-        } else {
-            res.json(null);
-        }
+            res.json(events);
+      
 
     })
 });
 
+
+/* GET ALL User Friends */
+router.get('/user/friends/:id', function(req, res, next) {
+    User.find({_id:{$ne:req.params.id}},'_id name username').exec((err, user) => {
+        if (err) return res.status(500).json(err);
+         res.status(200).json(user);
+     
+    })
+});
 
 /**
  * Create new event
@@ -77,16 +84,16 @@ router.post('/event/create', function(req, res) {
         if (err) {
             console.log(err)
         }
-
         var newEvent = new Event();
         newEvent.title = req.body.title;
+        newEvent.description=req.body.description;
         newEvent.start = req.body.start;
         newEvent.end = req.body.end;
-        newEvent.allDay= req.body.allDay;
-        newEvent.user.push(u);
-
+        newEvent.allDay= req.body.allDay;       
+       newEvent.createdBy=u;
+       newEvent.user=req.body.users;
         Event.create(newEvent).then(p1 => {
-            u.events.push(p1);
+    
             u.save().then(n => {
                 res.status(200).json(newEvent);
             })
@@ -99,15 +106,20 @@ router.post('/event/create', function(req, res) {
 
 
 router.put('/event/update/:id', function(req, res) {
-    Event.findOneAndUpdate(req.params.id,
+
+    Event.findOneAndUpdate({_id:req.params.id},
         {
             title:req.body.title,
+            description:req.body.description,
             start : req.body.start,
             end : req.body.end,
-            allDay: req.body.allDay      
+            allDay: req.body.allDay,
+            user:req.body.users   
         },  
         function(err, response){
+            console.log(err + "----"+ JSON.stringify(response))
                 if (err) {
+                   
                     res.status(400).send(err);
                 } else {
                     res.status(200).send('Event updated!');

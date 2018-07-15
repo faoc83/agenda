@@ -5,8 +5,13 @@ var Schema = mongoose.Schema,
 
 var EventSchema = new Schema({
     title: { type: String, required: true },
+    description: { type: String},
     start: { type: String, required: true },
     end: { type: String },
+    createdBy:{
+        type: ObjectId,
+        ref: "User"
+    },
     allDay: {
         type: Boolean,
         default:false
@@ -18,6 +23,12 @@ var EventSchema = new Schema({
 }, { timestamps: { createdAt: 'created_at' } });
 
 EventSchema.pre('remove', function (next) {
+    this.model('user').update({ events: this._id }, { $pull: { events: this._id } }, { multi: true },
+        next
+    );
+});
+
+EventSchema.pre('update', function (next) {
     this.model('user').update({ events: this._id }, { $pull: { events: this._id } }, { multi: true },
         next
     );

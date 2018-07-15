@@ -6,18 +6,17 @@
  var cors = require('cors');
  var User = require('./server/models/User.js');
 
+ /**
+  * moogoose connnection
+  */
  mongoose.Promise = global.Promise;
  mongoose.connect('mongodb://localhost:27017/cocus', {
      useMongoClient: true
  });
-
-
- var cocusUser = new User({
-     name: 'CocusCeo',
-     username: 'CocusCeo',
-     password: 'CocusCeo'
- });
-
+ 
+ /**
+  * Create Some default Users and Main Cocus User; 
+  */
  var user1 = new User({
     name: 'Cocus User1',
     username: 'User1',
@@ -35,6 +34,46 @@ var user3 = new User({
     username: 'User3',
     password: 'User3'
 });
+
+User.findOne({username:'User1'}).then((u)=>{
+    if(!u){
+        user1.save().then((d) => {
+           console.log('User1 Created')       
+       }).catch((e) => {
+           if (e) console.log(e)
+       })
+    }
+
+})
+
+User.findOne({username:'User2'}).then((u)=>{
+    if(!u){
+        user2.save().then((d) => {
+           console.log('User2 Created')       
+       }).catch((e) => {
+           if (e) console.log(e)
+       })
+    }
+
+})
+
+User.findOne({username:'User3'}).then((u)=>{
+    if(!u){
+        user3.save().then((d) => {
+           console.log('User3 Created')       
+       }).catch((e) => {
+           if (e) console.log(e)
+       })
+    }
+
+})
+
+var cocusUser = new User({
+    name: 'CocusCeo',
+    username: 'CocusCeo',
+    password: 'CocusCeo'
+});
+
 
  User.findOne({username:'CocusCeo'}).then((u)=>{
      if(!u){

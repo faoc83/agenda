@@ -1,24 +1,33 @@
 <app-header></app-header>
 <div class="container">
+
+
+
     <div class="col-md-6">
         <div class="col-md-12" *ngIf="calendarOptions">
             <ng-fullcalendar #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)" [(eventsModel)]="events"></ng-fullcalendar>
         </div>
     </div>
-    <div class="alert alert-warning alert-dismissible" role="alert" *ngIf="message !== ''">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button> {{message}}
-    </div>
-
     <div class="col-md-6">
+        <h3>Event Form</h3>
+        <hr>
         <form #userEvent="ngForm" class="form-event" (ngSubmit)="onSubmitEvent(userEvent.value)">
+
             <div class="form-group row">
-                <label for="inputTitle" class="col-sm-1 col-form-label">Title</label>
+                <label for="inputTitle" class="col-sm-2 col-form-label">Title</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Titulo" [(ngModel)]="title" required>
                 </div>
             </div>
+            <div class="form-group row">
+                <label for="inputDescription" class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-6">
+                    <textarea rows="3" cols="50" name="description" class="form-control" id="inputDescription" placeholder="Write some description..."
+                        [(ngModel)]="description">
+                                    </textarea> </div>
+            </div>
+
+
 
             <div class="form-group row">
                 <div class="form-check col-md-offset-3">
@@ -29,37 +38,67 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="inputStartDate" class="col-sm-1 col-form-label"> Start</label>
-                <div class="col-sm-4">
-                    <input type="date" class="form-control" id="inputStartDate" name="startDate" [(ngModel)]="startDate" pattern="dd/MM/YYYY"
-                        value="{{ startDate}}">
+                <label for="inputStartDate" class="col-sm-2 col-form-label lb-event-date">Start Day</label>
+                <div class="col-lg-4 div-datepicker">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-outline-secondary" (click)="endS.toggle()" type="button">
+                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <input class="form-control" placeholder="yyyy-mm-dd" name="dateS" [(ngModel)]="dateS" ngbDatepicker #endS="ngbDatepicker">
+                    </div>
                 </div>
-                <div class="col-sm-3 " *ngIf="!allDay">
-                    <input type="time" class="form-control" id="inputstartDateT" name="startDateT" [(ngModel)]="startDateT" value="{{ startDateT }}">
+                <div class="col-md-3 div-timepicker" *ngIf="!allDay">
+                    <ngb-timepicker [(ngModel)]="timeS" name="timeS"></ngb-timepicker>
                 </div>
+
             </div>
             <div class="form-group row" *ngIf="!allDay">
-                <label for="inputEndDate" class="col-sm-1 col-form-label">End</label>
-                <div class="col-sm-4">
-                    <input type="date" class="form-control" id="inputEndDate" name="endDate" [(ngModel)]="endDate" pattern="dd/MM/YYYY" value="{{ endDate}}">
+                <label for="inputStartDate" class="col-sm-2 col-form-label lb-event-date">End Day</label>
+                <div class="col-lg-4 div-datepicker">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-outline-secondary" (click)="endD.toggle()" type="button">
+                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <input class="form-control" placeholder="yyyy-mm-dd" name="dateE" [(ngModel)]="dateE" ngbDatepicker #endD="ngbDatepicker">
+                    </div>
                 </div>
-                <div class="col-sm-3">
-                    <input type="time" class="form-control" id="inputEndDateT" name="endDateT" [(ngModel)]="endDateT" value="{{ endDateT }}">
+                <div class="col-md-3 div-timepicker">
+                    <ngb-timepicker [(ngModel)]="timeE" name="timeE"></ngb-timepicker>
+                </div>
+            </div>
+
+            <hr>
+            <div class="form-group" *ngIf="friendsList" >
+                <h4>Invite Contacts:</h4>
+                <div class="form-check" *ngFor="let friend of friendsList; let i = index;">
+                    <label class="form-check-label" for="friend{{friend._id}}"> {{friend.name}}
+                        <input class="form-check-input" type="checkbox" id="friend{{friend._id}}" name="friendOptions" (change)="changeInviteFriends(i)"
+                            [checked]="friend.checked">
+
+                    </label>
                 </div>
             </div>
             <hr>
             <div class="form-group row">
                 <div class="col-sm-3 pull-right">
                     <button type="submit" class="btn btn-primary" *ngIf="!show">Create Event</button>
-                    <button type="submit" class="btn btn-primary" *ngIf="show">Edit</button>
+                    <button type="submit" class="btn btn-primary" *ngIf="show">Update Event</button>
                 </div>
                 <div class="form-group" *ngIf="show">
+                    <div class="col-md-2">
                         <button class="btn btn-default" (click)="cancelEditEvent()">Cancel</button>
-                        <button class="btn btn-danger" (click)="deleteEvent()">Delete</button>
                     </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-danger" (click)="deleteEvent()">Delete Event</button>
+                    </div>
+                </div>
             </div>
         </form>
 
-        
+
     </div>
 </div>
